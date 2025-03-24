@@ -1,0 +1,81 @@
+/* general styles */
+body {
+    font-family: 'Poppins', sans-serif;  /* Updated to Poppins font */
+    background-color: #e0f7fa;  /* Soft pastel light blue background */
+    margin: 20px;
+    text-align: center;
+    color: #333;  /* Darker text for contrast */
+}
+
+/* container */
+.container {
+    width: 60%;
+    margin: auto;
+    background: #b3e0ff;  /* Soft pastel light blue background for container */
+    padding: 30px;
+    border-radius: 15px;  /* Rounded corners for a cuter look */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* priority */
+.high {
+    color: red;
+}
+
+.medium {
+    color: orange;
+}
+
+.low {
+    color: green;
+}
+
+
+/* list style */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* list items */
+li {
+    background: hsl(216, 100%, 81%);  /* White background for each list item */
+    margin: 12px 0;
+    padding: 15px;
+    border: 1px solid #80b3ff;  /* Soft pastel blue border */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;  /* Rounded corners for items */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+/* hover effect for list items */
+li:hover {
+    transform: translateY(-5px);  /* Lift effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);  /* Slight shadow on hover */
+}
+
+/* completed task styling */
+.completed {
+    text-decoration: line-through;
+    color: #6c757d;  /* Soft grey color for completed tasks */
+    background-color: #cce7ff;  /* Light pastel blue background for completed tasks */
+}
+
+/* button style (if any) */
+button {
+    background-color: #80b3ff;  /* Pastel blue button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;  /* Rounded button */
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* button hover effect */
+button:hover {
+    background-color: #6699cc;  /* Slightly darker blue on hover */
+}

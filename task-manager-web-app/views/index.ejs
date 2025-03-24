@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>📜Task Manager📜</h1>
+
+        <!-- Search Bar -->
+        <form action="/" method="GET">
+            <input type="text" name="search" placeholder="Search...🔍" value="<%= searchQuery || '' %>">
+            <button type="submit">Search</button>
+        </form>
+
+        <!-- Dropdown Filter for Tasks -->
+        <form action="/" method="GET">
+            <label for="taskFilter">📍Activity📍:</label>
+            <select name="filter" id="taskFilter" onchange="this.form.submit()">
+                <option value="All" <%= filter === 'All' ? 'selected' : '' %>>All</option>
+                <option value="Completed" <%= filter === 'Completed' ? 'selected' : '' %>>Completed</option>
+                <option value="Incomplete" <%= filter === 'Incomplete' ? 'selected' : '' %>>Incomplete</option>
+            </select>
+        </form>
+
+        <!-- Task Form -->
+        <form action="/add-task" method="POST">
+            <input type="text" name="title" placeholder="Title..." required>
+            <input type="text" name="description" placeholder="Description...">
+            <label for="priority">❗️Priority❗️:</label>
+            <select name="priority" id="priority">
+                <option value="High">High</option>
+                <option value="Medium" <%= filter === 'Medium' ? 'selected' : '' %>>Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            <button type="submit">➕ Add Task</button>
+        </form>
+        
+        <!-- Task List -->
+        <ul>
+            <% tasks.forEach(task => { %>
+                <li class="<%= task.completed ? 'completed' : '' %> <%= task.priority.toLowerCase() %>">
+                    <strong><%= task.title %></strong> - <%= task.description %> 
+                    <span>
+                        [<%= task.priority %>]
+                    </span>
+                    <form action="/toggle-task/<%= task.id %>" method="POST" style="display:inline;">
+                        <button type="submit"><%= task.completed ? 'Undo' : 'Complete' %></button>
+                    </form>
+                    <form action="/delete-task/<%= task.id %>" method="POST" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            <% }); %>
+        </ul>        
+    </div>
+</body>
+</html>
