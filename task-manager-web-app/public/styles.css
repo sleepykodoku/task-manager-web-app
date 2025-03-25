@@ -1,19 +1,19 @@
 /* general styles */
 body {
-    font-family: 'Poppins', sans-serif;  /* Updated to Poppins font */
-    background-color: #e0f7fa;  /* Soft pastel light blue background */
+    font-family: 'Poppins', sans-serif;
+    background-color: #e0f7fa;
     margin: 20px;
     text-align: center;
-    color: #333;  /* Darker text for contrast */
+    color: #333;
 }
 
 /* container */
 .container {
     width: 60%;
     margin: auto;
-    background: #b3e0ff;  /* Soft pastel light blue background for container */
+    background: #b3e0ff;
     padding: 30px;
-    border-radius: 15px;  /* Rounded corners for a cuter look */
+    border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -30,52 +30,143 @@ body {
     color: green;
 }
 
-
 /* list style */
 ul {
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* list items */
 li {
-    background: hsl(216, 100%, 81%);  /* White background for each list item */
+    background: hsl(216, 100%, 81%);
     margin: 12px 0;
-    padding: 15px;
-    border: 1px solid #80b3ff;  /* Soft pastel blue border */
+    padding: 20px;
+    border: 1px solid #80b3ff;
+    width: 100%;
+    max-width: 700px;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    border-radius: 10px;  /* Rounded corners for items */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
 }
 
-/* hover effect for list items */
-li:hover {
-    transform: translateY(-5px);  /* Lift effect */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);  /* Slight shadow on hover */
+/* task content */
+.task-content {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
 }
+
+/* edit form styling */
+.edit-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.edit-form input,
+.edit-form select {
+    width: 80%;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #80b3ff;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* button container */
+.task-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* form buttons */
+.task-actions form {
+    display: flex;
+    justify-content: center;
+}
+
+/* button style */
+button {
+    background-color: #80b3ff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    min-width: 100px;
+}
+
+button:hover {
+    background-color: #6699cc;
+    transform: translateY(-2px);
+}
+
+.edit-form-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .edit-form-buttons button {
+    min-width: 100px;
+    padding: 8px 16px;
+  }
 
 /* completed task styling */
 .completed {
     text-decoration: line-through;
-    color: #6c757d;  /* Soft grey color for completed tasks */
-    background-color: #cce7ff;  /* Light pastel blue background for completed tasks */
+    color: #6c757d;
+    background-color: #cce7ff;
 }
 
-/* button style (if any) */
-button {
-    background-color: #80b3ff;  /* Pastel blue button */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;  /* Rounded button */
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+/* alert messages */
+.alert {
+    padding: 12px;
+    margin: 15px auto;
+    border-radius: 8px;
+    text-align: center;
+    width: 80%;
+    max-width: 500px;
 }
 
-/* button hover effect */
-button:hover {
-    background-color: #6699cc;  /* Slightly darker blue on hover */
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+    
+    .task-actions {
+        flex-wrap: wrap;
+    }
+    
+    button {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .edit-form input,
+    .edit-form select {
+        width: 100%;
+    }
 }

@@ -6,6 +6,40 @@
     <title>Task Manager</title>
     <link rel="stylesheet" href="/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        .edit-form {
+            display: none;
+            margin-top: 10px;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 5px;
+            width: 100%;
+        }
+        .edit-form input {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #80b3ff;
+        }
+        .edit-form select {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid #80b3ff;
+        }
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .form-actions button {
+            flex: 1;
+            max-width: 120px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -44,19 +78,50 @@
         <ul>
             <% tasks.forEach(task => { %>
                 <li class="<%= task.completed ? 'completed' : '' %> <%= task.priority.toLowerCase() %>">
-                    <strong><%= task.title %></strong> - <%= task.description %> 
-                    <span>
-                        [<%= task.priority %>]
-                    </span>
-                    <form action="/toggle-task/<%= task.id %>" method="POST" style="display:inline;">
-                        <button type="submit"><%= task.completed ? 'Undo' : 'Complete' %></button>
-                    </form>
-                    <form action="/delete-task/<%= task.id %>" method="POST" style="display:inline;">
-                        <button type="submit">Delete</button>
-                    </form>
+                    <% if (task.isEditing) { %>
+                        <!-- Edit Form (shown when editing) -->
+                        <form action="/tasks/<%= task.id %>?_method=PUT" method="POST" class="edit-form" style="display: block;">
+                            <input type="text" name="title" value="<%= task.title %>" required>
+                            <input type="text" name="description" value="<%= task.description %>">
+                            <select name="priority">
+                                <option value="High" <%= task.priority === 'High' ? 'selected' : '' %>>High</option>
+                                <option value="Medium" <%= task.priority === 'Medium' ? 'selected' : '' %>>Medium</option>
+                                <option value="Low" <%= task.priority === 'Low' ? 'selected' : '' %>>Low</option>
+                            </select>
+                            <div class="form-actions">
+                                <button type="submit">Save</button>
+                                <button type="button" onclick="cancelEdit('<%= task.id %>')">Cancel</button>
+                            </div>
+                        </form>
+                    <% } else { %>
+                        <!-- Task Display (normal view) -->
+                        <div class="task-content">
+                            <strong><%= task.title %></strong> - <%= task.description %> 
+                            <span>[<%= task.priority %>]</span>
+                            <div class="task-actions">
+                                <form action="/toggle-task/<%= task.id %>" method="POST" style="display:inline;">
+                                    <button type="submit"><%= task.completed ? 'Undo' : 'Complete' %></button>
+                                </form>
+                                <button onclick="enableEdit('<%= task.id %>')">Edit</button>
+                                <form action="/delete-task/<%= task.id %>" method="POST" style="display:inline;">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    <% } %>
                 </li>
             <% }); %>
         </ul>        
     </div>
+
+    <script>
+        function enableEdit(taskId) {
+            window.location.href = `/?edit=${taskId}`;
+        }
+
+        function cancelEdit(taskId) {
+            window.location.href = '/';
+        }
+    </script>
 </body>
 </html>

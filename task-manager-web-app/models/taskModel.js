@@ -38,3 +38,11 @@ export const toggleTask = async (id) => {
 export const deleteTask = async (id) => {
   await query('DELETE FROM tasks WHERE id = $1', [id]);
 };
+
+export const updateTask = async (id, title, description, priority) => {
+    const result = await query(
+      'UPDATE tasks SET title=$1, description=$2, priority=$3 WHERE id=$4 RETURNING *',
+      [title, description, priority, id]
+    );
+    return result.rows[0];
+  };

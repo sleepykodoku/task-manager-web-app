@@ -5,25 +5,29 @@ dotenv.config();
 
 const { Pool } = pg;
 
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT,
-});
+const poolConfig = {
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'taskmanager',
+  password: process.env.DB_PASSWORD || 'password',
+  database: process.env.DB_NAME || 'taskmanager',
+  port: process.env.DB_PORT || 5432,
+};
 
-pool.connect((err, client, release) => {
-  if (err) {
-    return console.error('Error acquiring client', err.stack);
-  }
-  console.log('Connected to PostgreSQL database');
-  release();
-});
+const pool = new Pool(poolConfig);
+
+// Test the connection immediately
+pool.connect()
+  .then((client) => {
+    console.log('Connected to PostgreSQL database');
+    client.release();
+  })
+  .catch((err) => {
+    console.error('Database connection error:', err);
+    process.exit(1);
+  });
 
 pool.on('error', (err) => {
-  console.error('Unexpected error on idle client', err);
-  process.exit(-1);
+  console.error('Unexpected database error:', err);
 });
 
 export const query = (text, params) => pool.query(text, params);

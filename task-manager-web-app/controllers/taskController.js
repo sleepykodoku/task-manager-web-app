@@ -3,13 +3,25 @@ import {
     addTask,
     toggleTask,
     deleteTask,
+    updateTask
   } from '../models/taskModel.js';
   
   export const showTasks = async (req, res) => {
     try {
-      const { search, filter } = req.query;
+      const { search, filter, edit } = req.query;
       const tasks = await getAllTasks(search, filter || 'All');
-      res.render('index', { tasks, searchQuery: search, filter: filter || 'All' });
+      
+      // Add editing state to tasks
+      const tasksWithEditState = tasks.map(task => ({
+        ...task,
+        isEditing: edit === task.id.toString()
+      }));
+  
+      res.render('index', { 
+        tasks: tasksWithEditState, 
+        searchQuery: search, 
+        filter: filter || 'All' 
+      });
     } catch (error) {
       console.error('Error fetching tasks:', error);
       res.status(500).send('Error fetching tasks');
@@ -56,5 +68,27 @@ import {
     } catch (error) {
       console.error('Error deleting task:', error);
       res.status(500).send('Error deleting task');
+    }
+  };
+  
+  export const updateTaskDetails = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { title, description, priority } = req.body;
+      
+      // Validation (same as createTask)
+      if (!title || title.length < 3 || title.length > 100) {
+        return res.status(400).send('Title must be between 3-100 characters');
+      }
+      
+      if (description && description.length > 500) {
+        return res.status(400).send('Description cannot exceed 500 characters');
+      }
+  
+      await updateTask(id, title, description, priority);
+      res.redirect('/');
+    } catch (error) {
+      console.error('Error updating task:', error);
+      res.status(500).send('Error updating task');
     }
   };
