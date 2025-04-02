@@ -6,9 +6,12 @@
     <title>Task Manager</title>
     <link rel="stylesheet" href="/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-  </head>
+</head>
 <body>
-    
+
+    <!-- Include Header Partial -->
+    <%- include('partials/header') %>
+
     <% if (errors && errors.length > 0) { %>
         <div class="error-container">
             <ul class="error-messages">
@@ -18,10 +21,8 @@
             </ul>
         </div>
     <% } %>
-    
-    <div class="container">
-        <h1>📜Task Manager📜</h1>
 
+    <div class="container">
         <!-- Search Bar -->
         <form action="/" method="GET">
             <input type="text" name="search" placeholder="Search...🔍" value="<%= searchQuery || '' %>">
@@ -40,8 +41,8 @@
 
         <!-- Task Form -->
         <form action="/add-task" method="POST">
-            <input type="text" name="title" placeholder="Title..." required>
-            <input type="text" name="description" placeholder="Description...">
+            <!-- Include Form Fields Partial -->
+            <%- include('partials/formFields') %>  <!-- This includes the form fields -->
             <label for="priority">❗️Priority❗️:</label>
             <select name="priority" id="priority">
                 <option value="High">High</option>
@@ -50,7 +51,7 @@
             </select>
             <button type="submit">➕ Add Task</button>
         </form>
-        
+
         <!-- Task List -->
         <ul>
             <% tasks.forEach(task => { %>
@@ -90,6 +91,9 @@
             <% }); %>
         </ul>        
     </div>
+
+    <!-- Include Footer Partial -->
+    <%- include('partials/footer') %>
 
     <script>
         function enableEdit(taskId) {
