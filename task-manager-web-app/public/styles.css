@@ -54,11 +54,22 @@ li {
     align-items: center;
 }
 
-/* task content */
+/* task content - now only applies to text elements */
 .task-content {
     width: 100%;
     text-align: center;
     margin-bottom: 15px;
+}
+
+/* Completed task text styling */
+.completed .task-text {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+
+/* Completed task background */
+.completed {
+    background-color: #a1e2ac;
 }
 
 /* edit form styling */
@@ -106,6 +117,7 @@ button {
     font-size: 14px;
     transition: all 0.3s ease;
     min-width: 100px;
+    text-decoration: none !important; /* Ensures no line-through */
 }
 
 button:hover {
@@ -119,18 +131,11 @@ button:hover {
     justify-content: center;
     width: 100%;
     margin-top: 10px;
-  }
-  
-  .edit-form-buttons button {
+}
+
+.edit-form-buttons button {
     min-width: 100px;
     padding: 8px 16px;
-  }
-
-/* completed task styling */
-.completed {
-    text-decoration: line-through;
-    color: #6c757d;
-    background-color: #cce7ff;
 }
 
 /* alert messages */
