@@ -6,42 +6,19 @@
     <title>Task Manager</title>
     <link rel="stylesheet" href="/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        .edit-form {
-            display: none;
-            margin-top: 10px;
-            padding: 15px;
-            background: #f0f8ff;
-            border-radius: 5px;
-            width: 100%;
-        }
-        .edit-form input {
-            margin-bottom: 10px;
-            padding: 8px;
-            width: 100%;
-            box-sizing: border-box;
-            border-radius: 4px;
-            border: 1px solid #80b3ff;
-        }
-        .edit-form select {
-            margin-bottom: 10px;
-            padding: 8px;
-            width: 100%;
-            border-radius: 4px;
-            border: 1px solid #80b3ff;
-        }
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        .form-actions button {
-            flex: 1;
-            max-width: 120px;
-        }
-    </style>
-</head>
+  </head>
 <body>
+    
+    <% if (errors && errors.length > 0) { %>
+        <div class="error-container">
+            <ul class="error-messages">
+                <% errors.forEach(error => { %>
+                    <li><%= error %></li>
+                <% }) %>
+            </ul>
+        </div>
+    <% } %>
+    
     <div class="container">
         <h1>📜Task Manager📜</h1>
 

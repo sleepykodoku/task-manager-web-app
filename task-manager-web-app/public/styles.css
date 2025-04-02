@@ -175,3 +175,36 @@ button:hover {
         width: 100%;
     }
 }
+
+.edit-form {
+    display: none;
+    margin-top: 10px;
+    padding: 15px;
+    background: #f0f8ff;
+    border-radius: 5px;
+    width: 100%;
+}
+.edit-form input {
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #80b3ff;
+}
+.edit-form select {
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #80b3ff;
+}
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.form-actions button {
+    flex: 1;
+    max-width: 120px;
+}
