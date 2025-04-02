@@ -23,33 +23,39 @@
     <% } %>
 
     <div class="container">
-        <!-- Search Bar -->
-        <form action="/" method="GET">
-            <input type="text" name="search" placeholder="Search...🔍" value="<%= searchQuery || '' %>">
-            <button type="submit">Search</button>
-        </form>
+        <!-- Search and Filter Section -->
+        <div class="search-filter-container">
+            <form action="/" method="GET" class="search-form">
+                <input type="text" name="search" placeholder="Search...🔍" value="<%= searchQuery || '' %>">
+                <button type="submit">Search</button>
+            </form>
 
-        <!-- Dropdown Filter for Tasks -->
-        <form action="/" method="GET">
-            <label for="taskFilter">📍Activity📍:</label>
-            <select name="filter" id="taskFilter" onchange="this.form.submit()">
-                <option value="All" <%= filter === 'All' ? 'selected' : '' %>>All</option>
-                <option value="Completed" <%= filter === 'Completed' ? 'selected' : '' %>>Completed</option>
-                <option value="Incomplete" <%= filter === 'Incomplete' ? 'selected' : '' %>>Incomplete</option>
-            </select>
-        </form>
+            <form action="/" method="GET" class="filter-form">
+                <label for="taskFilter">📍Activity📍:</label>
+                <select name="filter" id="taskFilter" onchange="this.form.submit()">
+                    <option value="All" <%= filter === 'All' ? 'selected' : '' %>>All</option>
+                    <option value="Completed" <%= filter === 'Completed' ? 'selected' : '' %>>Completed</option>
+                    <option value="Incomplete" <%= filter === 'Incomplete' ? 'selected' : '' %>>Incomplete</option>
+                </select>
+            </form>
+        </div>
 
         <!-- Task Form -->
-        <form action="/add-task" method="POST">
-            <!-- Include Form Fields Partial -->
-            <%- include('partials/formFields') %>  <!-- This includes the form fields -->
-            <label for="priority">❗️Priority❗️:</label>
-            <select name="priority" id="priority">
-                <option value="High">High</option>
-                <option value="Medium" <%= filter === 'Medium' ? 'selected' : '' %>>Medium</option>
-                <option value="Low">Low</option>
-            </select>
-            <button type="submit">➕ Add Task</button>
+        <form action="/add-task" method="POST" class="task-form">
+            <div class="form-fields-container">
+                <!-- Title, Description, and Priority fields side by side -->
+                <input type="text" name="title" placeholder="Title..." required class="form-field">
+                <input type="text" name="description" placeholder="Description..." class="form-field">
+                <label for="priority">❗️Priority❗️:</label>
+                <select name="priority" id="priority" class="form-field">
+                    <option value="" disabled selected>Select Priority</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                <button type="submit">➕ Add Task</button>
+            </div>
+            
         </form>
 
         <!-- Task List -->
@@ -57,8 +63,7 @@
             <% tasks.forEach(task => { %>
                 <li class="<%= task.completed ? 'completed' : '' %> <%= task.priority.toLowerCase() %>">
                     <% if (task.isEditing) { %>
-                        <!-- Edit Form (shown when editing) -->
-                        <form action="/tasks/<%= task.id %>?_method=PUT" method="POST" class="edit-form" style="display: block;">
+                        <form action="/tasks/<%= task.id %>?_method=PUT" method="POST" class="edit-form">
                             <input type="text" name="title" value="<%= task.title %>" required>
                             <input type="text" name="description" value="<%= task.description %>">
                             <select name="priority">
@@ -72,7 +77,6 @@
                             </div>
                         </form>
                     <% } else { %>
-                        <!-- Task Display (normal view) -->
                         <div class="task-content">
                             <strong><%= task.title %></strong> - <%= task.description %> 
                             <span>[<%= task.priority %>]</span>
@@ -89,7 +93,7 @@
                     <% } %>
                 </li>
             <% }); %>
-        </ul>        
+        </ul>
     </div>
 
     <!-- Include Footer Partial -->
