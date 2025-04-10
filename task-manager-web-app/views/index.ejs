@@ -8,8 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <!-- Include Header Partial -->
     <%- include('partials/header') %>
 
     <% if (errors && errors.length > 0) { %>
@@ -23,13 +21,16 @@
     <% } %>
 
     <div class="container">
-        <!-- Search and Filter Section -->
-        <div class="search-filter-container">
+        <!-- Centered Header Title -->
+        <div class="header">📜 Task Manager 📜</div>
+    
+        <!-- Search and Filter Section - Right Aligned -->
+        <div class="search-filter-container right-aligned">
             <form action="/" method="GET" class="search-form">
                 <input type="text" name="search" placeholder="Search...🔍" value="<%= searchQuery || '' %>">
                 <button type="submit">Search</button>
             </form>
-
+    
             <form action="/" method="GET" class="filter-form">
                 <label for="taskFilter">📍Activity📍:</label>
                 <select name="filter" id="taskFilter" onchange="this.form.submit()">
@@ -40,63 +41,75 @@
             </form>
         </div>
 
-        <!-- Task Form -->
-        <form action="/add-task" method="POST" class="task-form">
-            <div class="form-fields-container">
-                <!-- Title, Description, and Priority fields side by side -->
-                <input type="text" name="title" placeholder="Title..." required class="form-field">
-                <input type="text" name="description" placeholder="Description..." class="form-field">
-                <label for="priority">❗️Priority❗️:</label>
-                <select name="priority" id="priority" class="form-field">
-                    <option value="" disabled selected>Select Priority</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
-                </select>
+        <!-- Task Form - Centered with better layout -->
+        <form action="/add-task" method="POST" class="add-task-form">
+            <div class="form-row">
+                <input type="text" name="title" placeholder="Title..." required>
+                <input type="text" name="description" placeholder="Description...">
+            </div>
+            <div class="form-row">
+                <div class="priority-selector">
+                    <label for="priority">❗️Priority❗️:</label>
+                    <select name="priority" id="priority" required>
+                        <option value="" disabled selected>Select Priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
                 <button type="submit">➕ Add Task</button>
             </div>
-            
         </form>
 
-        <!-- Task List -->
-        <ul>
-            <% tasks.forEach(task => { %>
-                <li class="<%= task.completed ? 'completed' : '' %> <%= task.priority.toLowerCase() %>">
-                    <% if (task.isEditing) { %>
-                        <form action="/tasks/<%= task.id %>?_method=PUT" method="POST" class="edit-form">
-                            <input type="text" name="title" value="<%= task.title %>" required>
-                            <input type="text" name="description" value="<%= task.description %>">
-                            <select name="priority">
-                                <option value="High" <%= task.priority === 'High' ? 'selected' : '' %>>High</option>
-                                <option value="Medium" <%= task.priority === 'Medium' ? 'selected' : '' %>>Medium</option>
-                                <option value="Low" <%= task.priority === 'Low' ? 'selected' : '' %>>Low</option>
-                            </select>
-                            <div class="form-actions">
-                                <button type="submit">Save</button>
-                                <button type="button" onclick="cancelEdit('<%= task.id %>')">Cancel</button>
-                            </div>
-                        </form>
-                    <% } else { %>
-                        <div class="task-content">
-                            <strong><%= task.title %></strong> - <%= task.description %> 
-                            <span>[<%= task.priority %>]</span>
-                            <div class="task-actions">
-                                <form action="/toggle-task/<%= task.id %>" method="POST" style="display:inline;">
-                                    <button type="submit"><%= task.completed ? 'Undo' : 'Complete' %></button>
-                                </form>
-                                <button onclick="enableEdit('<%= task.id %>')">Edit</button>
-                                <form action="/delete-task/<%= task.id %>" method="POST" style="display:inline;">
-                                    <button type="submit">Delete</button>
-                                </form>
-                            </div>
-                        </div>
-                    <% } %>
-                </li>
-            <% }); %>
+        <!-- Task Grid -->
+        <ul class="task-grid">
+            <!-- Inside the loop for tasks -->
+<% tasks.forEach(task => { %>
+    <li class="task-card <%= task.completed ? 'completed' : '' %>">
+        <% if (task.isEditing) { %>
+            <form action="/tasks/<%= task.id %>?_method=PUT" method="POST" class="edit-form active">
+                <div class="form-group">
+                    <input type="text" name="title" value="<%= task.title %>" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="description"><%= task.description %></textarea>
+                </div>
+                <div class="form-group">
+                    <select name="priority">
+                        <option value="High" <%= task.priority === 'High' ? 'selected' : '' %>>High</option>
+                        <option value="Medium" <%= task.priority === 'Medium' ? 'selected' : '' %>>Medium</option>
+                        <option value="Low" <%= task.priority === 'Low' ? 'selected' : '' %>>Low</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">💾 Save</button>
+                    <button type="button" onclick="cancelEdit('<%= task.id %>')">❌ Cancel</button>
+                </div>
+            </form>
+        <% } else { %>
+            <div class="task-content">
+                <h3><%= task.title %></h3>
+                <p class="task-text"><%= task.description %></p>
+                <p class="<%= task.priority.toLowerCase() %>">Priority: <%= task.priority %></p>
+                <p>Status: <%= task.completed ? 'Completed' : 'Pending' %></p>
+            </div>
+            <div class="task-actions">
+                <form action="/toggle-task/<%= task.id %>" method="POST">
+                    <button type="submit" class="complete-btn">
+                        <%= task.completed ? '↩️ Undo' : '✓ Complete' %>
+                    </button>
+                </form>
+                <button onclick="enableEdit('<%= task.id %>')">✏️ Edit</button>
+                <form action="/delete-task/<%= task.id %>" method="POST">
+                    <button type="submit" class="delete-btn">🗑️ Delete</button>
+                </form>
+            </div>
+        <% } %>
+    </li>
+<% }); %>
         </ul>
     </div>
 
-    <!-- Include Footer Partial -->
     <%- include('partials/footer') %>
 
     <script>

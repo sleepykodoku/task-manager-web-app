@@ -6,7 +6,7 @@ import {
   updateTask
 } from '../models/taskModel.js';
 
-// Enhanced validation with detailed messages
+// validation
 const validateTaskInput = (title, description) => {
   const errors = [];
   
