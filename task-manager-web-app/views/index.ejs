@@ -10,7 +10,7 @@
 <body>
     <%- include('partials/header') %>
 
-    <% if (errors && errors.length > 0) { %>
+    <!-- <% if (errors && errors.length > 0) { %>
         <div class="error-container">
             <ul class="error-messages">
                 <% errors.forEach(error => { %>
@@ -18,19 +18,16 @@
                 <% }) %>
             </ul>
         </div>
-    <% } %>
+    <% } %> -->
 
     <div class="container">
-        <!-- Centered Header Title -->
-        <div class="header">📜 Task Manager 📜</div>
-    
         <!-- Search and Filter Section - Right Aligned -->
         <div class="search-filter-container right-aligned">
             <form action="/" method="GET" class="search-form">
                 <input type="text" name="search" placeholder="Search...🔍" value="<%= searchQuery || '' %>">
                 <button type="submit">Search</button>
             </form>
-    
+
             <form action="/" method="GET" class="filter-form">
                 <label for="taskFilter">📍Activity📍:</label>
                 <select name="filter" id="taskFilter" onchange="this.form.submit()">
@@ -44,8 +41,16 @@
         <!-- Task Form - Centered with better layout -->
         <form action="/add-task" method="POST" class="add-task-form">
             <div class="form-row">
-                <input type="text" name="title" placeholder="Title..." required>
-                <input type="text" name="description" placeholder="Description...">
+                <input type="text" name="title" placeholder="Title..." value="<%= formData.title %>" required>
+                <% if (errors && errors.length > 0 && errors.some(error => error.includes("Title"))) { %>
+                    <p class="error-message"><%= errors.find(error => error.includes("Title")) %></p>
+                <% } %>
+            </div>
+            <div class="form-row">
+                <input type="text" name="description" placeholder="Description..." value="<%= formData.description %>">
+                <% if (errors && errors.length > 0 && errors.some(error => error.includes("Description"))) { %>
+                    <p class="error-message"><%= errors.find(error => error.includes("Description")) %></p>
+                <% } %>
             </div>
             <div class="form-row">
                 <div class="priority-selector">
@@ -63,50 +68,45 @@
 
         <!-- Task Grid -->
         <ul class="task-grid">
-            <!-- Inside the loop for tasks -->
-<% tasks.forEach(task => { %>
-    <li class="task-card <%= task.completed ? 'completed' : '' %>">
-        <% if (task.isEditing) { %>
-            <form action="/tasks/<%= task.id %>?_method=PUT" method="POST" class="edit-form active">
-                <div class="form-group">
-                    <input type="text" name="title" value="<%= task.title %>" required>
-                </div>
-                <div class="form-group">
-                    <textarea name="description"><%= task.description %></textarea>
-                </div>
-                <div class="form-group">
-                    <select name="priority">
-                        <option value="High" <%= task.priority === 'High' ? 'selected' : '' %>>High</option>
-                        <option value="Medium" <%= task.priority === 'Medium' ? 'selected' : '' %>>Medium</option>
-                        <option value="Low" <%= task.priority === 'Low' ? 'selected' : '' %>>Low</option>
-                    </select>
-                </div>
-                <div class="form-actions">
-                    <button type="submit">💾 Save</button>
-                    <button type="button" onclick="cancelEdit('<%= task.id %>')">❌ Cancel</button>
-                </div>
-            </form>
-        <% } else { %>
-            <div class="task-content">
-                <h3><%= task.title %></h3>
-                <p class="task-text"><%= task.description %></p>
-                <p class="<%= task.priority.toLowerCase() %>">Priority: <%= task.priority %></p>
-                <p>Status: <%= task.completed ? 'Completed' : 'Pending' %></p>
-            </div>
-            <div class="task-actions">
-                <form action="/toggle-task/<%= task.id %>" method="POST">
-                    <button type="submit" class="complete-btn">
-                        <%= task.completed ? '↩️ Undo' : '✓ Complete' %>
-                    </button>
-                </form>
-                <button onclick="enableEdit('<%= task.id %>')">✏️ Edit</button>
-                <form action="/delete-task/<%= task.id %>" method="POST">
-                    <button type="submit" class="delete-btn">🗑️ Delete</button>
-                </form>
-            </div>
-        <% } %>
-    </li>
-<% }); %>
+            <% tasks.forEach(task => { %>
+                <li class="task-card <%= task.completed ? 'completed' : '' %>">
+                    <% if (task.isEditing) { %>
+                        <form action="/tasks/<%= task.id %>?_method=PUT" method="POST" class="edit-form active">
+                            <input type="text" name="title" value="<%= task.title %>" required>
+                            <textarea name="description"><%= task.description %></textarea>
+                            <div class="form-row">
+                                <select name="priority">
+                                    <option value="High" <%= task.priority === 'High' ? 'selected' : '' %>>High</option>
+                                    <option value="Medium" <%= task.priority === 'Medium' ? 'selected' : '' %>>Medium</option>
+                                    <option value="Low" <%= task.priority === 'Low' ? 'selected' : '' %>>Low</option>
+                                </select>
+                                <div class="form-actions">
+                                    <button type="submit">Save</button>
+                                    <button type="button" onclick="cancelEdit('<%= task.id %>')">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                    <% } else { %>
+                        <div class="task-content">
+                            <h3><%= task.title %></h3>
+                            <p class="task-text"><%= task.description %></p>
+                            <p class="<%= task.priority.toLowerCase() %>">Priority: <%= task.priority %></p>
+                            <p>Status: <%= task.completed ? 'Completed' : 'Pending' %></p>
+                        </div>
+                        <div class="task-actions">
+                            <form action="/toggle-task/<%= task.id %>" method="POST">
+                                <button type="submit" class="complete-btn">
+                                    <%= task.completed ? '↩️ Undo' : '✓ Complete' %>
+                                </button>
+                            </form>
+                            <button onclick="enableEdit('<%= task.id %>')">✏️ Edit</button>
+                            <form action="/delete-task/<%= task.id %>" method="POST">
+                                <button type="submit" class="delete-btn">🗑️ Delete</button>
+                            </form>
+                        </div>
+                    <% } %>
+                </li>
+            <% }); %>
         </ul>
     </div>
 
