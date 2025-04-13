@@ -16,7 +16,7 @@ const validateTaskInput = (title, description) => {
     errors.push("Title is required");
   } else {
     if (title.length < 3) {
-      errors.push("Title must be at least 3 characters");
+      errors.push("⚠️Title must be at least 3 characters");
     }
     if (title.length > 100) {
       errors.push("Title cannot exceed 100 characters");
@@ -25,7 +25,7 @@ const validateTaskInput = (title, description) => {
 
   // Description validation
   if (description && description.length > 500) {
-    errors.push("Description cannot exceed 500 characters");
+    errors.push("⚠️Description cannot exceed 500 characters");
   }
 
   return errors;

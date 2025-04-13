@@ -295,8 +295,16 @@ button:hover {
     to { opacity: 1; transform: translateY(0); }
 }
 .error-message {
-    color: red;
+    color: #c0392b;
+    background-color: #fdecea;
     font-size: 0.9em;
+    padding: 6px 10px;
+    border-radius: 4px;
     margin-top: 5px;
     margin-bottom: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
 }

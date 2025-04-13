@@ -40,18 +40,19 @@
 
         <!-- Task Form - Centered with better layout -->
         <form action="/add-task" method="POST" class="add-task-form">
+            <h1>Enter task: </h1>
             <div class="form-row">
                 <input type="text" name="title" placeholder="Title..." value="<%= formData.title %>" required>
-                <% if (errors && errors.length > 0 && errors.some(error => error.includes("Title"))) { %>
-                    <p class="error-message"><%= errors.find(error => error.includes("Title")) %></p>
-                <% } %>
             </div>
+            <% if (errors && errors.length > 0 && errors.some(error => error.includes("Title"))) { %>
+                <p class="error-message"><%= errors.find(error => error.includes("Title")) %></p>
+            <% } %>
             <div class="form-row">
                 <input type="text" name="description" placeholder="Description..." value="<%= formData.description %>">
-                <% if (errors && errors.length > 0 && errors.some(error => error.includes("Description"))) { %>
-                    <p class="error-message"><%= errors.find(error => error.includes("Description")) %></p>
-                <% } %>
             </div>
+            <% if (errors && errors.length > 0 && errors.some(error => error.includes("Description"))) { %>
+                <p class="error-message"><%= errors.find(error => error.includes("Description")) %></p>
+            <% } %>
             <div class="form-row">
                 <div class="priority-selector">
                     <label for="priority">❗️Priority❗️:</label>
